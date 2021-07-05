@@ -41,7 +41,7 @@ public class GridManager : MonoBehaviour
             for(int j = 0; j < height; j++){
                 for(int i = 0; i < width; i++){
                    // if(grid.getCellValue(i,j) == 0){
-                        Gizmos.color = Color.white;
+                        Gizmos.color = Color.red;
                         Gizmos.DrawLine(grid.getWorldPosition(i,j), grid.getWorldPosition(i+1,j));
                         Gizmos.DrawLine(grid.getWorldPosition(i,j), grid.getWorldPosition(i,j+1));
                         //Debug.Log(grid.getCellValue(i,j));

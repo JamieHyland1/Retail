@@ -74,7 +74,7 @@ public class Pathfinding : ComponentSystem
                 }
             }
 
-            Debug.Log(pathArray.Length);
+           // Debug.Log(pathArray.Length);
             return pathArray;
         }
 

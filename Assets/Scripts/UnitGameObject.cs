@@ -7,39 +7,56 @@ public class UnitGameObject : MonoBehaviour
 {
     [SerializeField]
     private ConvertedEntityHolder convertedEntityHolder;
+    List<Vector3> moveList;
 
+    MovingState movingState;
     void Start()
     {
-//        Debug.Log(convertedEntityHolder.GetEntity());
+        // if(convertedEntityHolder == null){
+        //     convertedEntityHolder = this.GetComponent<ConvertedEntityHolder>();
+        //     Debug.Log("null");
+        // }
+        moveList = new List<Vector3>();
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         Vector3 pos = transform.position;
         Entity entity = convertedEntityHolder.GetEntity();
         EntityManager manager = convertedEntityHolder.GetEntityManager();
-        if(Input.GetMouseButtonDown(0)){
-            manager.AddComponentData(entity, new PathFindingParams{
-                startPosition = new int2(0,0),
+        // if(Input.GetMouseButtonDown(0)){
+        //     manager.AddComponentData(entity, new PathFindingParams{
+        //         startPosition = new int2(0,0),
+        //         endPosition = GridManager.randomGridPosition()
+        //     });
+        // }
+        PathFollow pathFollow = manager.GetComponentData<PathFollow>(entity);
+        DynamicBuffer<PathPosition> pathBuffer  = manager.GetBuffer<PathPosition>(entity);
+        if(pathFollow.pathIndex >= 0){
+            Vector3 currentPos = new Vector3(pathBuffer[pathFollow.pathIndex].position.x,1,pathBuffer[pathFollow.pathIndex].position.y);
+            moveList.Add(currentPos);    
+            if(pathFollow.pathIndex > 0)pathFollow.pathIndex--;
+        }
+    }
+
+    public List<Vector3> getMoveList(){
+        PathFollow pathFollow = convertedEntityHolder.GetEntityManager().GetComponentData<PathFollow>(convertedEntityHolder.GetEntity());
+        pathFollow.pathIndex--;
+        return moveList;
+    }
+
+    public void requestPath(){
+        Entity entity = convertedEntityHolder.GetEntity();
+        EntityManager manager = convertedEntityHolder.GetEntityManager();
+        Debug.Log(manager);
+         PathFollow pathPos = manager.GetComponentData<PathFollow>(entity);
+        int2 currentPosition = new int2((int)this.transform.position.x,(int)this.transform.position.z);  
+        if(pathPos.pathIndex == -1){
+            manager.AddComponentData(entity,new PathFindingParams{
+                startPosition = currentPosition,
                 endPosition = GridManager.randomGridPosition()
             });
         }
-        PathFollow pathFollow = manager.GetComponentData<PathFollow>(entity);
-        DynamicBuffer<PathPosition> pathBuffer  = manager.GetBuffer<PathPosition>(entity);
-         if(pathFollow.pathIndex >= 0){
-                int2 pathPosition = pathBuffer[pathFollow.pathIndex].position;
-
-                float3 targetPosition = new float3(pathPosition.x+0.5f,0,pathPosition.y+0.5f);
-                float3 moveDir = math.normalizesafe(targetPosition-(float3)transform.position);
-
-                transform.position += (Vector3)moveDir * 5 * Time.deltaTime;
-
-                if(math.distance((float3)transform.position, targetPosition) < 0.1f){
-                    transform.position = targetPosition;
-                    pathFollow.pathIndex--;
-                }
-                //transform.position = pos;
-            }
     }
 }

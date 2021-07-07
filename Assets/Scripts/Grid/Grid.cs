@@ -23,17 +23,13 @@ public class Grid{
         for(int j = 0; j < height; j+=spacing){
             for(int i = 0; i < width; i+=spacing){
                 cells[i,j] = new Node(i,j,true);
-               // Debug.Log(cells[i,j]._isWalkable);
-              // if(i == 0 || j == 0 || i == width-1 || j == height-1)cells[i,j].setWalkable();
             }
         }
     }
 
     public void setCellValue(int i, int j){
         if(i >= 0 && i < width && j >= 0 && j < height){
-           // Debug.Log("Setting value at: " + " " + i + " " + j);
             this.cells[i,j].setWalkable();
-          //  Debug.Log(this.cells[i,j]._isWalkable);
         }
     }
 

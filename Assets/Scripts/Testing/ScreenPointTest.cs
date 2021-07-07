@@ -7,7 +7,7 @@ public class ScreenPointTest : MonoBehaviour
   
 
     [SerializeField]
-    static LayerMask mask;
+    LayerMask mask;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,9 +17,9 @@ public class ScreenPointTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if(Input.GetMouseButtonDown(0)){
-        //     setScreenPos();
-        // }
+        if(Input.GetMouseButtonDown(0)){
+            setScreenPos();
+        }
     }
 
     public static void setScreenPos(){
@@ -29,7 +29,7 @@ public class ScreenPointTest : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out hit, 1000)){
                 Vector2Int pos = new Vector2Int(Mathf.FloorToInt(hit.point.x),Mathf.FloorToInt(hit.point.z));
-             //   Debug.Log("Before: " + GridManager.grid.getCellValue(pos.x,pos.y));
+                Debug.Log("Before: " + GridManager.grid.getCellValue(pos.x,pos.y));
                 GridManager.grid.setCellValue(pos.x,pos.y);
                // Debug.Log("After: " + GridManager.grid.getCellValue(pos.x,pos.y));
             }

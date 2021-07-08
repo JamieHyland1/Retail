@@ -42,3 +42,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: DynamicUI
+    uniqueID: 834878651
+    locked: 0

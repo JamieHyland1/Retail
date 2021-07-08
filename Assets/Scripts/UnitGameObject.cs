@@ -40,17 +40,11 @@ public class UnitGameObject : MonoBehaviour
         }
     }
 
-    public List<Vector3> getMoveList(){
-        PathFollow pathFollow = convertedEntityHolder.GetEntityManager().GetComponentData<PathFollow>(convertedEntityHolder.GetEntity());
-        pathFollow.pathIndex--;
-        return moveList;
-    }
-
     public void requestPath(){
         Entity entity = convertedEntityHolder.GetEntity();
         EntityManager manager = convertedEntityHolder.GetEntityManager();
-        Debug.Log(manager);
-         PathFollow pathPos = manager.GetComponentData<PathFollow>(entity);
+        //Debug.Log(manager);
+        PathFollow pathPos = manager.GetComponentData<PathFollow>(entity);
         int2 currentPosition = new int2((int)this.transform.position.x,(int)this.transform.position.z);  
         if(pathPos.pathIndex == -1){
             manager.AddComponentData(entity,new PathFindingParams{

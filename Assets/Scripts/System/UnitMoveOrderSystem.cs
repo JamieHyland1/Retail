@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
@@ -7,6 +8,7 @@ using Unity.Mathematics;
 
 public class UnitMoveOrderSystem : ComponentSystem
 {
+
   protected override void OnUpdate(){
       if(Input.GetButtonDown("Jump")){
           Entities.ForEach((Entity entity, ref Translation translation)=>{

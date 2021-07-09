@@ -9,15 +9,20 @@ public class GridManager : MonoBehaviour
     public static int width = 10;
     [SerializeField,Range(1,100)]
     public static int height = 10;
+    
+    [SerializeField]
+    private LayerMask mask;
+
     [SerializeField,Range(1,100)]
     int spacing = 5;
     public static Grid grid;
    
     void Start(){
         if(grid == null){
-            Debug.Log("Initializing grid: " + Time.realtimeSinceStartup);
+//            Debug.Log("Initializing grid: " + Time.realtimeSinceStartup);
             grid = new Grid(width,height,spacing);
             grid.generateGrid();
+            checkGridLayout();
         }
     }
 
@@ -25,7 +30,6 @@ public class GridManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y,-Camera.main.transform.position.z));
         worldPosition.y = 0;
         Vector2Int val = new Vector2Int(Mathf.FloorToInt(worldPosition.x),Mathf.FloorToInt(worldPosition.z));
-      //  Debug.Log(worldPosition + " " + val);
         return val;
     }
 
@@ -33,6 +37,24 @@ public class GridManager : MonoBehaviour
         int x = Mathf.FloorToInt(UnityEngine.Random.RandomRange(0,grid.width));
         int y = Mathf.FloorToInt(UnityEngine.Random.RandomRange(0,grid.height));
         return new int2(x,y);
+    }
+
+    private void checkGridLayout(){
+        RaycastHit hit;
+        for(int j = 0; j < height; j++){
+            for(int i = 0; i < width; i ++){
+                Vector3 worldPos = grid.getWorldPosition(i,j);
+                worldPos+=(Vector3.up*2.5f);
+                worldPos+=(Vector3.right*0.5f);
+               // Debug.Log(worldPos);
+               Debug.DrawRay(worldPos,Vector3.down,Color.red);
+                if (Physics.Raycast(worldPos, Vector3.down, out hit, Mathf.Infinity, mask)){
+                    if(hit.collider != null){
+                        grid.setCellValue(i,j);
+                    }
+                }
+            }
+        }
     }
 
 
